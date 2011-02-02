@@ -1,0 +1,146 @@
+= AlphaCore
+
+AlphaCore is an obstrusive JavaScript library that aims at fixing, implementing
+and emulating standard JavaScript and DOM in broken and old browsers.
+
+Since its fixing problems and bugs it should be optional in standard compliant
+browsers.
+
+== DOM prototypes in Internet Explorer before IE8
+
+The prefered way to extend objects in JavaScript is throught objects' prototype.
+JavaScript is all about prototypes. Problem is Internet Explore doesn't implement
+any DOM prototypes (eg. Element, Event) before IE8. AlphaCore emulates the
+Element and Event objects when they're undefined, so that all you have to do
+when you want to add a <tt>hide</tt> method to all elements is adding it to
+<tt>Element.prototype</tt>.
+
+For instance:
+
+ Element.prototype.hide = function() {
+   this.style.display = 'none';
+ }
+
+=== Extending elements
+
+Elements won't be extended automatically, which forces you to manually
+extend them with methods like <tt>$</tt>. AlphaCore does the job for you
+almost everywhere by having +document.getElementById+ or
++elm.getElementsByTagName+ (among others) to always return elements that have
+already been extended for you.
+
+For instance the following should work:
+
+ document.getElementById('elm').hide();
+
+=== Extending element attributes (which are elements themselves)
+
+There is a limitation to automatic extend: we can overwrite methods that return
+an element or a collection of element but we can't, for performance reasons,
+extend attributes like +parentNode+, +nextSibling+, etc. It would cause the
+whole tree to be extended at once, and there would be bugs anyway elements
+added to the DOM with innerHTML not being extended, etc.
+
+AlphaCore proposes two solutions to this problem:
+
+- manually extend the attributes with <tt>$(element.parentNode)</tt> or
+  <tt>Alpha.extendElement(element.parentNode)</tt>.
+- use the Element.prototype.get() method of elements, which returns extended elements.
+
+Example:
+
+ element.get('parentNode').addEventListener('click', listener, false);
+
+Since AlphaCore is optional in standard compliant browsers, the get method
+may not be available, so you may test for its presence:
+
+ var parent = element.get ? element.get('parentNode') : element.parentNode;
+ parent.addEventListener('click', listener, false);
+
+In the end you may use whatever method suits you:
+
+- you don't care about IE 6/7? just use attributes like the DOM says so;
+- you care about IE 6/7? use <tt>element.get(attribute)</tt>;
+- you care about IE 6/7 but don't want to load Alpha on mobiles? use
+  <tt>element.get ? element.get(attribute) : element.attribute</tt>.
+- etc.
+
+
+== DOM Events in Internet Explorer
+
+Internet Explorer before IE9 lacks support for DOM Events, and still relies
+on +attachEvent+, +detachEvent+, etc. AlphaCore implements them --in bubbling
+mode only since the capture mode seems harder to emulate (but might be doable).
+
+AlphaCore fixes the Event object passed to the listeners --in fact IE doesn't
+even pass any Event object. Most of the elements related to the event are fixed:
++target+, +relatedTarget+, +currentTarget+; +this+ is also fixed; as well as
+some values, like +pageX+ and +pageY+.
+
+Example:
+
+ document.getElementById('elm').addEventListener('click', function(evt) {
+   alert(evt.relatedTarget);
+ }, false);
+
+You may also listen and dispatch custom events. This is especially useful for
+Ruby on Rails UJS (Unobstrusive JavaScript) where form submitted throught
+XMLHttpRequest are supposed to dispatch custom events like +ajax:before+,
++ajax:after+, etc.
+
+
+== Limitations and concerns
+
+Even thought IE8 has support for getters and setters, older releases do not,
+and I don't think it's possible to emulate it without relying on ugly hacks
+(see http://alex.dojotoolkit.org/08/jscript/lettable.html ). This fact leads
+to some difficulties.
+
+For instance the emulation of Firefox 3.5's +children+, +countElementChild+,
++lastElementChild+, etc. attributes. Those can be emulated throught getters
+in most browsers, but not in IE 6/7. Sadly :(
+
+In these browsers we need to rely on the <tt>Element.prototype.get</tt> method.
+
+
+== Backward compatibility
+
+New browsers come with nice new features, that are obviously lacking in older
+releases that we still have to support. One goal of AlphaCore is to implement
+(or emulate) these when they're missing.
+
+Here are a few examples: the +JSON+ object, +getElementsByClassName+, 
++querySelectorAll+, etc.
+
+
+== Explorer Canvas (by Google)
+
+From what I tested, excanvas.js must be loaded in the document's HEAD, and any
+script that needs to access canvas elements must be defered, or started on
+load. For instance:
+
+  <script type="text/javascript" defer="defer">
+  var ctx = document.getElementById('my-canvas').getContext('2d');
+  </script>
+
+If excanvas.js is loaded before AlphaCore, created +canvas+ elements will be
+automatically extended when calling <tt>document.createElement('canvas')</tt>.
+
+  <script type="text/javascript">
+  window.addEventListener('load', function()
+  {
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+  }, false);
+  </script>
+
+
+== Authors
+
+- Julien Portalier <ysbaddaden@gmail.com>
+
+
+== Contribute
+
+Just fork the project on Github, and send me a pull request.
+
