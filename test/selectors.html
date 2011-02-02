@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+</head>
+<body>
+
+  <div id="test" class="test">test</div>
+  <div id="toto" class="toto">
+    <div id="tata" class="tata">tata</div>
+  </div>
+  
+  <input type="text" name="titi" style="display:none"/>
+
+<script src="jsunit.js"></script>
+<script src="loader.js"></script>
+<script>
+
+jsUnit.add("document.getElementsByClassName", function()
+{
+  var tata = document.getElementsByClassName('tata')[0];
+  jsUnit.assertEquals(tata.id, 'tata');
+});
+
+jsUnit.add("Element.prototype.getElementsByClassName", function()
+{
+  var test = document.getElementById('test');
+  var toto = test.get('nextElementSibling');
+  var tata = toto.getElementsByClassName('tata')[0];
+  jsUnit.assertEquals(tata.id, 'tata');
+});
+
+jsUnit.run();
+
+</script>
+
+</body>
+</html>

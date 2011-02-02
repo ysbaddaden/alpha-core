@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+</head>
+<body>
+
+  <button id="btn">show viewport's inner size</button>
+
+  <div id="test">test</div>
+  <div id="toto">
+    <div id="tata">tata</div>
+  </div>
+  
+  <input type="text" name="titi" style="display:none"/>
+
+<script src="jsunit.js"></script>
+<script src="loader.js"></script>
+<script src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
+<script>
+
+console.log(window.innerWidth, window.innerHeight);
+
+document.getElementById('btn').addEventListener('click', function() {
+  console.log(window.innerWidth, window.innerHeight);
+}, false);;
+
+</script>
+
+</body>
+</html>
