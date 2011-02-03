@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-	<link rel="stylesheet" type="text/css" href="base.css"/>
-</head>
-<body>
-
-<h1>DOM Event</h1>
-
-<script src="unit.js"></script>
-<script src="loader.js"></script>
-<!--script src="http://getfirebug.com/firebug-lite.js"></script-->
-<script>
-
 new Unit.TestCase('events',
 {
   setup: function()
@@ -171,10 +156,3 @@ new Unit.TestCase('events',
     this.assertTrue(this.input.dispatchEvent(e));
   }
 });
-
-Unit.HtmlRunner.run();
-
-</script>
-
-</body>
-</html>

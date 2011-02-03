@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<link rel="stylesheet" type="text/css" href="base.css"/>
+	<title>AlphaCore Tests</title>
+</head>
+<body>
+  
+  <h1>AlphaCore Tests</h1>
+
+  <div class="block" id="main">
+    <div>
+      <section></section>
+      
+      <p>
+        <a href=""></a>
+      </p>
+      <p class="block">
+        <a href="" id="link" class="edit"></a>
+        <a href="" class="edit test" lang="tr"></a>
+      </p>
+      
+      <section></section>
+      <section class="toc"></section>
+      <section></section>
+    </div>
+    
+    <article class="dtd-example">
+      <p class="empty"></p>
+    </article>
+  </div>
+  
+  <p class="c">
+    <a href="" class="more" id="bug"></a>
+  </p>
+
+  <script src="../src/array.js"></script>
+  <script src="../src/string.js"></script>
+  <script src="../src/core.js"></script>
+  <script src="../src/dom/dom.js"></script>
+  <script src="../src/dom/event.js"></script>
+  <script src="../src/dom/element.js"></script>
+  <script src="../src/dom/window.js"></script>
+  <script src="../src/selectors/classname.js"></script>
+  <script src="../src/selectors/sly.js"></script>
+  <script src="../src/json2.js"></script>
+  <script src="../src/xmlhttprequest.js"></script>
+  
+  <script src="unit.js"></script>
+  
+  <script src="element_test.js"></script>
+  <script src="events_test.js"></script>
+  <script src="selectors_test.js"></script>
+  
+  <script>
+  Unit.HtmlRunner.run();
+  </script>
+
+</body>
+</html>

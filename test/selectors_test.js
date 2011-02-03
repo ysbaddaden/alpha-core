@@ -1,48 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-	<link rel="stylesheet" type="text/css" href="base.css"/>
-  <title>Query Selector Tests</title>
-</head>
-<body>
-
-<h1>Selectors Tests</h1>
-
-  <div class="block" id="main">
-    <div>
-      <section></section>
-      
-      <p>
-        <a href=""></a>
-      </p>
-      <p class="block">
-        <a href="" id="link" class="edit"></a>
-        <a href="" class="edit test" lang="tr"></a>
-      </p>
-      
-      <section></section>
-      <section class="toc"></section>
-      <section></section>
-    </div>
-    
-    <article class="dtd-example">
-      <p class="empty"></p>
-    </article>
-  </div>
-  
-  <p class="c">
-    <a href="" class="more" id="bug"></a>
-  </p>
-
-
-<script src="unit.js"></script>
-<script src="loader.js"></script>
-
-<!--script src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script-->
-<script>
-
-// IE will fail a lot since it doesn't understand any HTML5 elements,
+// IE will fail since it doesn't understand any HTML5 elements,
 // and looks like it refuses to consider them as elements :/
 
 new Unit.TestCase('QuerySelectorTest',
@@ -155,10 +111,3 @@ new Unit.TestCase('GetElementsByClassNameTests',
     this.assertEqual(more.id, 'bug');
   }
 });
-
-Unit.HtmlRunner.run();
-
-</script>
-
-</body>
-</html>

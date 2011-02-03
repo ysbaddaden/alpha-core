@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-	<link rel="stylesheet" type="text/css" href="base.css"/>
-</head>
-<body>
-
-<h1>DOM Element</h1>
-
-<script src="unit.js"></script>
-<script src="loader.js"></script>
-<script>
 Element.prototype.get_id = function() {
   return this.id;
 }
@@ -125,9 +112,3 @@ new Unit.TestCase('ElementTest',
   }
 });
 
-Unit.HtmlRunner.run();
-
-</script>
-
-</body>
-</html>
