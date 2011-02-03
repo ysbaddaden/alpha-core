@@ -13,5 +13,5 @@ var FILES = [
 ];
 
 for (var i=0; i<FILES.length; i++) {
-  document.write('<script type="text/javascript" src="../lib/' + FILES[i] + '"></script>');
+  document.write('<script type="text/javascript" src="../src/' + FILES[i] + '"></script>');
 }
