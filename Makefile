@@ -1,16 +1,16 @@
 YUICOMP = java -jar bin/yuicompressor-2.4.2.jar
 
-FILES=lib/array.js \
-	lib/string.js \
-	lib/core.js \
-	lib/dom/dom.js \
-	lib/dom/element.js \
-	lib/dom/event.js \
-	lib/dom/window.js \
-	lib/selectors/sly.js \
-	lib/selectors/classname.js \
-	lib/xmlhttprequest.js \
-	lib/json2.js
+FILES=src/array.js \
+	src/string.js \
+	src/core.js \
+	src/dom/dom.js \
+	src/dom/element.js \
+	src/dom/event.js \
+	src/dom/window.js \
+	src/selectors/sly.js \
+	src/selectors/classname.js \
+	src/xmlhttprequest.js \
+	src/json2.js
 
 all: core
 
