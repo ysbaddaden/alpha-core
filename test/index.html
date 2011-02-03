@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="../src/html5.js"></script>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-	<link rel="stylesheet" type="text/css" href="base.css"/>
 	<title>AlphaCore Tests</title>
+	<link rel="stylesheet" type="text/css" href="base.css"/>
 </head>
 <body>
   
@@ -26,7 +27,10 @@
       <section></section>
     </div>
     
-    <article class="dtd-example">
+    <span data-name="dtd-something">
+    </span>
+    
+    <article data-name="dtd-example">
       <p class="empty"></p>
     </article>
   </div>
@@ -44,6 +48,7 @@
   <script src="../src/dom/window.js"></script>
   <script src="../src/selectors/classname.js"></script>
   <script src="../src/selectors/sly.js"></script>
+<!--  <script src="../src/selectors/llamalab.js"></script>-->
   <script src="../src/json2.js"></script>
   <script src="../src/xmlhttprequest.js"></script>
   
