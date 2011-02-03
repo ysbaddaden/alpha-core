@@ -44,7 +44,7 @@ added to the DOM with innerHTML not being extended, etc.
 AlphaCore proposes two solutions to this problem:
 
 - manually extend the attributes with <tt>$(element.parentNode)</tt> or
-  <tt>Alpha.extendElement(element.parentNode)</tt>.
+  <tt>Alpha.$(element.parentNode)</tt>.
 - use the Element.prototype.get() method of elements, which returns extended elements.
 
 Example:
