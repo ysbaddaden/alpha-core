@@ -35,13 +35,25 @@
  *  - use of querySelectorAll() has been removed (no use, we actually replace it when missing or obviously limited).
  *  - non standard selectors/operators have been removed (ie :contains).
  *  - integrated missing CSS 3 pseudo selectors (ie. :root and :target).
- * 
- * Lacks:
- * 
- *  - support for HTML5 elements in IE (that's IE's fault).
  */
 
-if (!Element.prototype.querySelectorAll || Alpha.browser.ie)
+Alpha.fullQSASupport = function()
+{
+  if (!document.querySelectorAll) {
+    return false;
+  }
+  
+  try {
+    document.querySelectorAll('p:last-child');
+  }
+  catch(e) {
+    return false;
+  }
+  
+  return true;
+}
+
+if (!Alpha.fullQSASupport())
 {
   var Sly   = (function()
   {
@@ -725,7 +737,7 @@ if (!Element.prototype.querySelectorAll || Alpha.browser.ie)
 	    },
 
 	    'index': function(node, index) {
-		    var count = 1;
+		    var count = 0;
 		    while ((node = node.previousSibling)) {
 			    if (node.nodeType == 1 && ++count > index) return false;
 		    }
@@ -780,7 +792,7 @@ if (!Element.prototype.querySelectorAll || Alpha.browser.ie)
 	    },
 
 	    '|=': function(value, escaped) {
-		    return '(?:^|\\|)' + escaped + '(?:$|\\|)';
+	      return '(?:^|-)' + escaped + '(?:$|-)';
 	    }
 
     };
