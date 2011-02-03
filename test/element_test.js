@@ -104,10 +104,10 @@ new Unit.TestCase('ElementTest',
 
   test_previousElementSibling: function()
   {
-    var sibling = document.getElementById('next1').previousElementSibling;
-    this.assertEqual(sibling.id, 'next2');
+    var sibling = document.getElementById('next1').get('previousElementSibling');
+    this.assertEqual('next2', sibling.id);
     
-    var sibling = document.getElementById('tata').previousElementSibling;
+    var sibling = document.getElementById('tata').get('previousElementSibling');
     this.assertNull(sibling);
   }
 });
