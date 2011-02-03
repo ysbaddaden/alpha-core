@@ -3,19 +3,19 @@
 
 new Unit.TestCase('QuerySelectorTest',
 {
-//  test_querySelectorAll_prototype: function()
-//  {
-//    this.assertTypeOf('function', document.querySelectorAll);
-//    this.assertTypeOf('function', Element.prototype.querySelectorAll);
-//    this.assertTypeOf('function', document.createElement('div').querySelectorAll);
-//  },
+  test_querySelectorAll_prototype: function()
+  {
+    this.assertTypeOf('function', document.querySelectorAll);
+    this.assertTypeOf('function', Element.prototype.querySelectorAll);
+    this.assertTypeOf('function', document.createElement('div').querySelectorAll);
+  },
 
-//  test_querySelector_prototype: function()
-//  {
-//    this.assertTypeOf('function', document.querySelector);
-//    this.assertTypeOf('function', Element.prototype.querySelector);
-//    this.assertTypeOf('function', document.createElement('div').querySelector);
-//  },
+  test_querySelector_prototype: function()
+  {
+    this.assertTypeOf('function', document.querySelector);
+    this.assertTypeOf('function', Element.prototype.querySelector);
+    this.assertTypeOf('function', document.createElement('div').querySelector);
+  },
 
   test_id: function()
   {
@@ -113,7 +113,6 @@ new Unit.TestCase('GetElementsByClassNameTests',
   test_getElementsByClassName_prototype: function()
   {
     this.assertTypeOf('function', document.getElementsByClassName);
-    this.assertTypeOf('function', Element.prototype.getElementsByClassName);
     this.assertTypeOf('function', document.createElement('div').getElementsByClassName);
   },
 

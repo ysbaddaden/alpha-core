@@ -39,17 +39,21 @@
 
 Alpha.fullQSASupport = function()
 {
+  // older browsers
   if (!document.querySelectorAll) {
     return false;
   }
   
-  try {
+  try
+  {
+    // IE8 proposes querySelectorAll but limited in features
     document.querySelectorAll('p:last-child');
   }
   catch(e) {
     return false;
   }
   
+  // any good browser, even IE9
   return true;
 }
 
