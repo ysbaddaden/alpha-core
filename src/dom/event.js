@@ -1,14 +1,10 @@
 /**
- * Emulates DOM Events in Internet Explorer.
+ * Emulates DOM Events in IE < 9.
  * 
  * - document.createEvent()
  * - Element.dispatchEvent()
  * - Element.addEventListener()
  * - Element.removeEventListener()
- * 
- * requires: compat/core.js
- * requires: compat/element/dom.js
- * requires: compat/element/element.js
  * 
  * Custom event dispatching is inspired by Prototype.js
  * by Sam Stephenson http://www.prototypejs.org/

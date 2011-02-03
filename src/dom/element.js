@@ -26,6 +26,8 @@
 //    }
 //  }
 
+  // It's simpler to implement the non-standard innerText in non-IE browsers
+  // than implementing the standard textContent in IE < 8.
   if (typeof elm.innerText == 'undefined')
   {
     Element.prototype._alpha_get_innerText = function() {
