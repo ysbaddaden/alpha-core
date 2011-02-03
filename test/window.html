@@ -2,29 +2,20 @@
 <html>
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
 <body>
+  <h1>Window Tests</h1>
 
-  <button id="btn">show viewport's inner size</button>
+  <pre>Window size: <span id="console"></span></pre>
 
-  <div id="test">test</div>
-  <div id="toto">
-    <div id="tata">tata</div>
-  </div>
-  
-  <input type="text" name="titi" style="display:none"/>
-
-<script src="jsunit.js"></script>
 <script src="loader.js"></script>
-<script src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
 <script>
-
-console.log(window.innerWidth, window.innerHeight);
-
-document.getElementById('btn').addEventListener('click', function() {
-  console.log(window.innerWidth, window.innerHeight);
-}, false);;
-
+function debugWindowSize() {
+  document.getElementById('console').innerHTML = window.innerWidth + "px × " + window.innerHeight + "px"
+}
+window.addEventListener('resize', debugWindowSize, false);
+debugWindowSize();
 </script>
 
 </body>
