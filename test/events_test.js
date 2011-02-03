@@ -1,4 +1,4 @@
-new Unit.TestCase('events',
+new Unit.TestCase('EventsTest',
 {
   setup: function()
   {
