@@ -1,7 +1,7 @@
 YUICOMP = java -jar bin/yuicompressor-2.4.2.jar
 
-FILES=src/array.js \
-	src/string.js \
+FILES=src/support/array.js \
+	src/support/string.js \
 	src/core.js \
 	src/dom/dom.js \
 	src/dom/element.js \
@@ -9,8 +9,8 @@ FILES=src/array.js \
 	src/dom/window.js \
 	src/selectors/sly.js \
 	src/selectors/classname.js \
-	src/xmlhttprequest.js \
-	src/json2.js
+	src/support/xmlhttprequest.js \
+	src/support/json2.js
 
 all: core
 

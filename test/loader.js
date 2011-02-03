@@ -1,15 +1,15 @@
 var FILES = [
-  'array.js',
-  'string.js',
+  'support/array.js',
+  'support/string.js',
   'core.js',
   'dom/dom.js',
   'dom/event.js',
   'dom/element.js',
   'dom/window.js',
-  'selectors/classname.js',
   'selectors/sly.js',
-  'json2.js',
-  'xmlhttprequest.js'
+  'selectors/classname.js',
+  'support/xmlhttprequest.js',
+  'support/json2.js'
 ];
 
 for (var i=0; i<FILES.length; i++) {
