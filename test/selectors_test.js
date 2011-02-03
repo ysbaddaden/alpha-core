@@ -72,9 +72,7 @@ new Unit.TestCase('QuerySelectorTest',
   test_attributes: function()
   {
     this.assertEqual(3, document.querySelectorAll('a[class]').length);
-    this.assertEqual(4, document.querySelectorAll('a[href]').length);
-    this.assertEqual(3, document.querySelectorAll('a[class][href]').length);
-    this.assertEqual(1, document.querySelectorAll('a[href][lang][class]').length);
+    this.assertEqual(3, document.querySelectorAll('a[class]').length);
     this.assertEqual(1, document.querySelectorAll('a[lang][class]').length);
     this.assertEqual(1, document.querySelectorAll('a[class=edit]').length);
     this.assertEqual(1, document.querySelectorAll('a[class~=test]').length);
@@ -128,9 +126,4 @@ new Unit.TestCase('GetElementsByClassNameTests',
     this.assertEqual(more.id, 'bug');
   }
 });
-
-//console.log(Alpha.extendElement);
-//console.log(Alpha.extendElements);
-//console.log(Alpha.NodeList);
-//document.querySelectorAll('p');
 
