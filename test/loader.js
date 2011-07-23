@@ -5,6 +5,7 @@ var FILES = [
   'dom/dom.js',
   'dom/event.js',
   'dom/element.js',
+  'dom/class_list.js',
   'dom/window.js',
   'selectors/sly.js',
   'selectors/classname.js',
