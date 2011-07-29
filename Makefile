@@ -6,6 +6,7 @@ FILES=src/support/array.js \
 	src/dom/dom.js \
 	src/dom/element.js \
 	src/dom/event.js \
+	src/dom/class_list.js \
 	src/dom/window.js \
 	src/selectors/sly.js \
 	src/selectors/classname.js \
