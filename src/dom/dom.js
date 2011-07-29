@@ -48,6 +48,12 @@ if (typeof Element == 'undefined')
           // creates (or overwrites) the method
           o[method] = Obj.prototype[method];
         }
+        
+        // extra extend for classList
+        if (typeof Alpha.ClassList != "undefined") {
+          o.classList = new Alpha.ClassList(o);
+        }
+        
         o._alpha_extended = true;
       }
       return o;

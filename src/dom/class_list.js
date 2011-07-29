@@ -68,12 +68,11 @@
       }
       return this._alpha_classList;
     }
-//    Element.prototype._alpha_ie_extend.push(['get_classList']);
 
     if (Object.defineProperty)
     {
       Object.defineProperty(Element.prototype, 'classList', {
-        get: Element.prototype._alpha_get_classList,
+        get: Element.prototype._alpha_get_classList
       });
     }
     else if (Element.prototype.__defineGetter__) {
