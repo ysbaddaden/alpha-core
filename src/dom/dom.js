@@ -1,19 +1,19 @@
 /**
- * Tries to emulate the DOM Element prototype in MSIE < 8.
+ * Emulates the DOM Element prototype in MSIE < 8.
+ * 
+ * There is a limitation: adding methods to the Element prototype at any time,
+ * won't add them to already extended elements (not fixable), even if you extend
+ * them again (fixable in some extend).
  */
 
 // The following tries to fix the DOM Element in MSIE < 8.
-if (typeof Element == 'undefined')
-{
+if (typeof Element === 'undefined') {
   // Garbage Collector, to prevent memory leaks
   Alpha.garbage = [];
-  window.attachEvent('onunload', function()
-  {
-    for (var i=0, len=Alpha.garbage.length; i<len; i++)
-    {
+  window.attachEvent('onunload', function () {
+    for (var i = 0, len = Alpha.garbage.length; i < len; i++) {
       var element = Alpha.garbage[i];
-      if (element)
-      {
+      if (element) {
         // FIXME: Calling elm.clearAttributes() on unload crashes IE7?!
 //        if (element.clearAttributes) {
 //          element.clearAttributes();
@@ -27,107 +27,91 @@ if (typeof Element == 'undefined')
   });
   
   // Generic Object prototype emulator
-  Alpha.prototypeEmulator = function()
-  {
-    var Obj       = {};
+  Alpha.prototypeEmulator = function () {
+    var Obj = {};
     Obj.prototype = {};
-
-    Obj._alpha_extend = function(o)
-    {
-      if (/*typeof o == 'object' &&*/ !o._alpha_extended)
-      {
+    Obj._alpha_extend = function (o) {
+      if (!o._alpha_extended) {
         Alpha.garbage.push(o);
-
-        for (var method in Obj.prototype)
-        {
-          // saves the original method
+        
+        // backups the original method then creates, or overwrites, it
+        for (var method in Obj.prototype) {
           if (o[method] && !o['_alpha_' + method]) {
             o['_alpha_' + method] = o[method];
           }
-          
-          // creates (or overwrites) the method
           o[method] = Obj.prototype[method];
         }
         
-        // extra extend for classList
+        // special extend for classList
         if (typeof Alpha.ClassList != "undefined") {
           o.classList = new Alpha.ClassList(o);
         }
-        
         o._alpha_extended = true;
       }
       return o;
-    }
+    };
     return Obj;
-  }
+  };
 
   // Emulates the DOM Element prototype
   Element = new Alpha.prototypeEmulator();
 
   // Manually extends an element
-  Alpha.extendElement = function(elm) {
+  Alpha.extendElement = function (elm) {
     return Element._alpha_extend(elm);
-  }
+  };
 
   // Manually extends many elements
-  Alpha.extendElements = function(elms)
-  {
+  Alpha.extendElements = function (elms) {
     var rs = [];
     for (var i=0, len=elms.length; i<len; i++) {
       rs.push(Alpha.extendElement(elms[i]));
     }
     return rs;
-  }
+  };
 
   // document.createElement should return an already extended element
   // also extends <canvas> elements if excanvas.js is loaded
   Alpha._msie_createElement = document.createElement;
-  document.createElement = function(tagName)
-  {
+  document.createElement = function (tagName) {
     var elm = Alpha._msie_createElement(tagName);
     if (tagName == 'canvas' && window.G_vmlCanvasManager) {
       elm = G_vmlCanvasManager.initElement(elm);
     }
     return Alpha.extendElement(elm);
-  }
+  };
 
   // document.getElementById should return an extended element
   Alpha._msie_getElementById = document.getElementById;
-  document.getElementById = function(id)
-  {
+  document.getElementById = function (id) {
     var elm = Alpha._msie_getElementById(id);
     return elm ? Alpha.extendElement(elm) : elm;
-  }
+  };
 
   // document.getElementsByName should return extended elements
   Alpha._msie_getElementsByName = document.getElementsByName;
-  document.getElementsByName = function(id)
-  {
+  document.getElementsByName = function (id) {
     var elms = Alpha._msie_getElementsByName(id);
     return elms.length ? new Alpha.NodeList(Alpha.extendElements(elms)) : elms;
-  }
+  };
 
   // document.getElementsByTagName should return extended elements
   Alpha._msie_getElementsByTagName = document.getElementsByTagName;
-  document.getElementsByTagName = function(id)
-  {
+  document.getElementsByTagName = function (id) {
     var elms = Alpha._msie_getElementsByTagName(id);
     return elms.length ? new Alpha.NodeList(Alpha.extendElements(elms)) : elms;
-  }
+  };
 
   // elm.getElementsByTagName should return extended elements
-  Element.prototype.getElementsByTagName = function(id)
-  {
+  Element.prototype.getElementsByTagName = function (id) {
     var elms = this._alpha_getElementsByTagName(id);
     return elms.length ? new Alpha.NodeList(Alpha.extendElements(elms)) : elms;
-  }
+  };
 
   // fixes a pseudo-leak in MSIE
-  Element.prototype.removeChild = function(child)
-  {
+  Element.prototype.removeChild = function (child) {
     var garbage = document.getElementById('_alpha_msie_leak_garbage');
-    if (!garbage)
-    {
+    if (!garbage) {
       garbage = document.createElement('div');
       garbage.id = '_alpha_msie_leak_garbage';
       garbage.style.display    = 'none';
@@ -141,6 +125,5 @@ if (typeof Element == 'undefined')
     // destroys the reference
     garbage.appendChild(child);
     garbage.innerHTML = '';
-  }
+  };
 }
-

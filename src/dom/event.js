@@ -10,39 +10,23 @@
  * by Sam Stephenson http://www.prototypejs.org/
  */
 
-if (!Element.prototype.addEventListener)
-{
+if (!Element.prototype.addEventListener) {
   var ALPHA_CUSTOM_EVENTS_COUNT = 'data-alpha-custom-events-counter';
   
-  // adds support for DOMContentLoaded
-  if (document.attachEvent)
-  {
-    document.attachEvent('onreadystatechange', function()
-    {
-      if (document.readyState == 'complete')
-      {
-        var e = document.createEvent('HTMLEvents');
-        e.initEvent('DOMContentLoaded', true, true);
-        document.dispatchEvent(e);
-      }
-    });
-  }
-
   // fixes the Event DOM prototype
-  if (typeof Event == 'undefined') {
+  if (typeof Event === 'undefined') {
     Event = new Alpha.prototypeEmulator();
   }
 
-  Event.prototype.preventDefault = function() {
+  Event.prototype.preventDefault = function () {
     this.returnValue = false;
-  }
+  };
 
-  Event.prototype.stopPropagation = function() {
+  Event.prototype.stopPropagation = function () {
     this.cancelBubble = true;
-  }
+  };
 
-  Alpha.event = function(currentTarget)
-  {
+  Alpha.event = function (currentTarget) {
     // clones current event
     var event = {};
     for (var i in window.event) {
@@ -62,8 +46,7 @@ if (!Element.prototype.addEventListener)
     // target: the element the event happened on
     if (event.target) {
       event.target = Alpha.$(event.target);
-    }
-    else if (event.srcElement) {
+    } else if (event.srcElement) {
       event.target = Alpha.$(event.srcElement);
     }
     
@@ -72,17 +55,13 @@ if (!Element.prototype.addEventListener)
       event.currentTarget = Alpha.$(currentTarget);
     }
     
-    if (event.type == 'mouseover')
-    {
+    if (event.type === 'mouseover') {
       // relatedTarget: the element the mouse came from
       event.relatedTarget = Alpha.$(event.fromElement);
-    }
-    else if (event.type == 'mouseout')
-    {
+    } else if (event.type === 'mouseout') {
       // relatedTarget: the element the mouse left to
       event.relatedTarget = Alpha.$(event.toElement);
-    }
-    else {
+    } else {
       event.relatedTarget = null;
     }
     
@@ -91,30 +70,27 @@ if (!Element.prototype.addEventListener)
     event.pageY = event.clientY + document.scrollTop;
     
     return event;
-  }
+  };
 
-  Element.prototype.addEventListener = function(type, listener, useCapture)
-  {
+  Element.prototype.addEventListener = function (type, listener, useCapture) {
     if (useCapture) {
-      throw new Error("Capture mode isn't supported by MSIE (and isn't emulated).");
+      throw new Error("Capture mode isn't supported by MSIE and isn't emulated.");
     }
-
+    
     // creates the list of listeners to call (per type)
     if (!this._alpha_events) {
       this._alpha_events = {};
     }
 
     // creates the real listener for event type
-    if (!this._alpha_events[type])
-    {
+    if (!this._alpha_events[type]) {
       var self = this;
       var _event    = '_alpha_event_' + type + '_event';
       var _listener = '_alpha_event_' + type + '_listener';
       
       this._alpha_events[type] = {
         listeners: [],
-        real_listener: function()
-        {
+        real_listener: function () {
           // the event object
           self[_event] = Alpha.event(self);
           
@@ -129,9 +105,8 @@ if (!Element.prototype.addEventListener)
           window.event.returnValue  = self[_event].returnValue;
           window.event.cancelBubble = self[_event].cancelBubble;
         },
-        custom_launcher: function(evt)
-        {
-          if (evt.propertyName == _listener) {
+        custom_launcher: function (evt) {
+          if (evt.propertyName === _listener) {
             self[_listener].call(self, self[_event]);
           }
         }
@@ -140,17 +115,13 @@ if (!Element.prototype.addEventListener)
       // attaches the real listener
       if (typeof this['on' + type] != 'undefined') {
         this.attachEvent('on' + type, this._alpha_events[type].real_listener);
-      }
-      else
-      {
+      } else {
         // We can't use custom event types in IE, we thus use uncommon types,
         // and we have to listen for both (one that bubbles, and one that doesn't).
         // 
-        // We also use a counter in order to not multiply the listerners, which
-        // would multiple the event calls, each time we listen for a new custom
-        // event.
-        if (this.getAttribute(ALPHA_CUSTOM_EVENTS_COUNT) === null)
-        {
+        // We also use a counter in order to not multiply the listeners, which
+        // would duplicate the event calls, each time we add a new custom event.
+        if (this.getAttribute(ALPHA_CUSTOM_EVENTS_COUNT) === null) {
           this.attachEvent('ondataavailable', this._alpha_events[type].real_listener);
           this.attachEvent('onlosecapture',   this._alpha_events[type].real_listener);
         }
@@ -162,49 +133,39 @@ if (!Element.prototype.addEventListener)
 
     // adds the listener to internal list
     this._alpha_events[type].listeners.push(listener);
-  }
+  };
 
-  Element.prototype.removeEventListener = function(type, listener, useCapture)
-  {
+  Element.prototype.removeEventListener = function (type, listener, useCapture) {
     if (useCapture) {
-      return new Error("Capture mode isn't supported by MSIE (and isn't emulated).");
+      return new Error("Capture mode isn't supported by MSIE, and isn't emulated.");
     }
-    
-    if (this._alpha_events)
-    {
-      if (this._alpha_events[type])
-      {
+    if (this._alpha_events) {
+      if (this._alpha_events[type]) {
         // removes the listener
         var idx = this._alpha_events[type].listeners.indexOf(listener);
-        if (idx > -1)
-        {
+        if (idx > -1) {
           delete this._alpha_events[type].listeners[idx];
           this._alpha_events[type].listeners.splice(idx, 1);
         }
         
         // no more listeners: let's detach the real one and clean up
-        if (this._alpha_events[type].listeners.length == 0)
-        {
+        if (this._alpha_events[type].listeners.length === 0) {
           this._alpha_remove_event_listener(type);
           delete this._alpha_events[type];
         }
       }
       
       // no more listeners: let's clean up
-      if (this._alpha_events.length == 0) {
+      if (this._alpha_events.length === 0) {
         delete this._alpha_events;
       }
     }
-  }
+  };
 
-  Element.prototype.clearEvents = function()
-  {
-    if (this._alpha_events)
-    {
-      for (var type in this._alpha_events)
-      {
-        if (this._alpha_events[type].listeners)
-        {
+  Element.prototype.clearEvents = function () {
+    if (this._alpha_events) {
+      for (var type in this._alpha_events) {
+        if (this._alpha_events[type].listeners) {
           for (var i=0, len=this._alpha_events[type].listeners.length; i<len; i++) {
             delete this._alpha_events[type].listeners[i];
           }
@@ -213,58 +174,48 @@ if (!Element.prototype.addEventListener)
         delete this._alpha_events[type];
       }
     }
-  }
+  };
 
-  Element.prototype._alpha_remove_event_listener = function(type)
-  {
+  Element.prototype._alpha_remove_event_listener = function (type) {
     if (typeof this['on' + type] != 'undefined') {
       this.detachEvent('on' + type, this._alpha_events[type].real_listener);
-    }
-    else if (this.getAttribute(ALPHA_CUSTOM_EVENTS_COUNT) == 1)
-    {
-      // custom event: we listen for two event types (one that bubbles, and one that doesn't)
+    } else if (this.getAttribute(ALPHA_CUSTOM_EVENTS_COUNT) === 1) {
+      // this is a custom event: we listen for two event types (one that bubbles, and one that doesn't)
       this.detachEvent('ondataavailable', this._alpha_events[type].real_listener);
       this.detachEvent('onlosecapture',   this._alpha_events[type].real_listener);
       this.removeAttribute(ALPHA_CUSTOM_EVENTS_COUNT);
-    }
-    else {
+    } else {
       this.setAttribute(ALPHA_CUSTOM_EVENTS_COUNT, this.getAttribute(ALPHA_CUSTOM_EVENTS_COUNT) - 1);
     }
     this.detachEvent('onpropertychange', this._alpha_events[type].custom_launcher);
-  }
+  };
 
-
-  // custom events
-
+  // Adds support for custom events.
   Alpha.events = {};
-
-  Alpha.events.Event = function() {}
-  Alpha.events.Event.prototype.initEvent = function(type, canBubble, cancelable)
-  {
+  Alpha.events.Event = function () {};
+  Alpha.events.Event.prototype.initEvent = function (type, canBubble, cancelable) {
     this.type = type;
     this.event = document.createEventObject();
     this.event.eventType = canBubble ? 'ondataavailable' : 'onlosecapture';
     this.event._alpha_event_type = type;
-  }
-  Alpha.events.HTMLEvents = function() {}
+  };
+  Alpha.events.HTMLEvents = function () {
+  };
   Alpha.events.HTMLEvents.prototype = new Alpha.events.Event();
 
-  document.createEvent = function(className) {
-    return new Alpha.events[className];
-  }
+  document.createEvent = function (className) {
+    var K = Alpha.events[className];
+    return new K();
+  };
 
-  Element.prototype.dispatchEvent = function(event)
-  {
-    for (var i in event)
-    {
-      if (i != 'type' && i != 'event'
-        && typeof event.event[i] == undefined)
-      {
+  Element.prototype.dispatchEvent = function (event) {
+    for (var i in event) {
+      if (i !== 'type' && i !== 'event' && typeof event.event[i] === "undefined") {
         event.event[i] = event;
       }
     }
     return this.fireEvent(event.event.eventType, event.event);
-  }
+  };
 
   document.addEventListener    = Element.prototype.addEventListener;
   document.removeEventListener = Element.prototype.removeEventListener;
@@ -276,21 +227,32 @@ if (!Element.prototype.addEventListener)
   document.documentElement.clearEvents         = Element.prototype.clearEvents;
   document.documentElement.dispatchEvent       = Element.prototype.dispatchEvent;
 
-  window.addEventListener = function(type, listener, useCapture) {
+  window.addEventListener = function (type, listener, useCapture) {
     return document.documentElement.addEventListener(type, listener, useCapture);
-  }
-  window.removeEventListener = function(type, listener, useCapture) {
+  };
+  window.removeEventListener = function (type, listener, useCapture) {
     return document.documentElement.removeEventListener(type, listener, useCapture);
-  }
-  window.clearEvents = function() {
+  };
+  window.clearEvents = function () {
     return document.documentElement.clearEvents();
-  }
-  window.dispatchEvent = function(event) {
+  };
+  window.dispatchEvent = function (event) {
     return document.documentElement.dispatchEvent(event);
-  }
+  };
 
   document.body.addEventListener    = Element.prototype.addEventListener;
   document.body.removeEventListener = Element.prototype.removeEventListener;
   document.body.clearEvents         = Element.prototype.clearEvents;
   document.body.dispatchEvent       = Element.prototype.dispatchEvent;
+
+  // adds support for DOMContentLoaded
+  if (document.attachEvent) {
+    document.attachEvent('onreadystatechange', function () {
+      if (document.readyState === 'complete') {
+        var e = document.createEvent('HTMLEvents');
+        e.initEvent('DOMContentLoaded', true, true);
+        document.dispatchEvent(e);
+      }
+    });
+  }
 }
