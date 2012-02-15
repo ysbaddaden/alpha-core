@@ -6,7 +6,7 @@ and emulating standard JavaScript and DOM in broken and old browsers.
 The initial idea was to create a compatibility library, permitting developers
 to write JavaScript and DOM as defined by the ECMAScript and the W3C. This means
 an obstrusive framework that transparently adds support for missing or broken
-standard methods like `addEventListener()` or `querySelectorAll()` using a
+standard methods like `addEventListener` or `querySelectorAll` using a
 standard API.
 
 Most of AlphaCore is actually optional in standard compliant browsers, even in
@@ -61,7 +61,7 @@ limiting the need to it manually.
 
 For instance the following will just work in IE6:
 
-   document.getElementById('myDialog').hide();
+    document.getElementById('myDialog').hide();
 
 ### Extending element attributes (which are elements themselves)
 
@@ -167,11 +167,19 @@ automatically extended when calling `document.createElement('canvas')`.
 
 ## Authors
 
-- Julien Portalier <ysbaddaden@gmail.com>
+- Julien Portalier <julien@portalier.com>
 
+### Credits
 
-## Contribute
+AlphaCore relies on some external libraries:
 
-Just fork the project on Github, and send me a pull request! Please check your
-code with [jshint](http://www.jshint.com/about/) before submitting.
+- [GetElementsByClassName](http://robertnyman.com/2008/05/27/the-ultimate-getelementsbyclassname-anno-2008/) by Robert Nyman;
+- [sly](https://github.com/digitarald/sly) by Harald Kirschner;
+- [JSON2.js](http://www.json.org/js.html) by Douglas Crockford;
+- JavaScript 1.6 and 1.8 polyfills for `Array` from the [Mozilla Developer Network](http://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array).
+
+### Contribute
+
+Just fork the project on Github and send pull requests.
+Please be sure to check your code with [jshint](http://www.jshint.com/about/) before.
 
