@@ -1,21 +1,17 @@
-YUICOMP = java -jar bin/yuicompressor-2.4.2.jar
+IE8=src/html5.js \
+	src/es5-shim.js \
+	src/events.js \
+	src/getelementsbyclassname.js \
+	src/classlist.js \
+	src/dom4.js \
+	src/window.js
 
-FILES=src/support/array.js \
-	src/support/string.js \
-	src/core.js \
-	src/dom/dom.js \
-	src/dom/element.js \
-	src/dom/event.js \
-	src/dom/class_list.js \
-	src/dom/window.js \
-	src/selectors/sly.js \
-	src/selectors/classname.js \
-	src/support/xmlhttprequest.js \
-	src/support/json2.js
+CORE=src/classlist.js \
+	src/dom4.js
 
 all: core
 
 core:
-	cat $(FILES) > lib/alpha-core.js
-	$(YUICOMP) lib/alpha-core.js > lib/alpha-core-compressed.js
+	cat $(IE8) > lib/core-ie8.js
+	cat $(CORE) > lib/core.js
 
